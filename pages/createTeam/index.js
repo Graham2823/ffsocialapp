@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import NavBar from '../components/navBar';
+import { Dropdown } from 'react-bootstrap';
 
 const initialTeam = {
 	QB: '',
@@ -21,6 +23,7 @@ const index = () => {
 	const [selectedPlayer, setSelectedPlayer] = useState();
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
     const [teamName, setTeamName] = useState()
+	const [showDropdown, setShowDropdown] = useState(false)
 
 	useEffect(() => {
 		fetch('/api/teams', {
@@ -46,6 +49,7 @@ const index = () => {
 			})
 			.then((players) => {
 				setSelectedPlayers(players);
+				setShowDropdown(true)
 			});
 	};
 
@@ -56,14 +60,21 @@ const index = () => {
         }));
     }
 
+	const handleDropDown = (e) =>{
+		console.log("e", e)
+		setSelectedPlayer(e.target.text)
+		setShowDropdown(false)
+	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        console.log(selectedPlayers)
+        console.log("selected player in submit", selectedPlayers)
 		const player = selectedPlayers.filter(
 			(player) => player.players.name === selectedPlayer
 		);
-		console.log(player);
+		console.log("player in submit",player);
 		if (player) {
+			setSelectedPlayer()
 			const playerPosition = player[0].players.position;
             if (playerPosition === 'QB' && fantasyTeam.QB !== '' ) {
                 if(fantasyTeam.bench.length>5){
@@ -167,11 +178,13 @@ const index = () => {
     }
 	return (
 		<div>
+			<NavBar/>
 			<h2>Add your Fantasy Team:</h2>
 			<form>
 				<input
 					type='text'
-					placeholder='Enter Players Name'
+					placeholder={selectedPlayer ? selectedPlayer : 'enter player name'}
+					value={selectedPlayer && selectedPlayer}
 					onChange={(e) => handleInput(e)}></input>
 				{teams.length > 0 ? (
 					<select
@@ -192,19 +205,21 @@ const index = () => {
 				)}
 				<div>
 					{selectedPlayers.length > 0 && (
-						<select
-							name='Players'
-							value={selectedPlayer}
-							onChange={(e) => setSelectedPlayer(e.target.value)}>
-							<option value='Players' defaultValue>
-								Click for Players
-							</option>
+						<Dropdown.Menu show={showDropdown} value={selectedPlayer}>
 							{selectedPlayers.map((player) => (
-								<option value={player.players.name} key={player.players.index}>
+								<Dropdown.Item value={player.players.name} key={player.players.index} onClick={(e) => handleDropDown(e)}>
 									{player.players.name}
-								</option>
+								</Dropdown.Item>
 							))}
-						</select>
+						</Dropdown.Menu>
+						// <select
+						// 	name='Players'
+						// 	value={selectedPlayer}
+						// 	onChange={(e) => setSelectedPlayer(e.target.value)}>
+						// 	<option value='Players' defaultValue>
+						// 		Click for Players
+						// 	</option>
+						// </select>
 					)}
 				</div>
 				<button onClick={(e) => handleSubmit(e)}>Add Player</button>

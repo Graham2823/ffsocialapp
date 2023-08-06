@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import NavBar from '../components/navBar'
 
 
 const index = () => {
@@ -20,6 +20,9 @@ const index = () => {
     },[fantasyTeams])
 
   return (
+	<>
+	
+	<NavBar/>
     <div style={{display:'flex', justifyContent:'space-evenly', flexWrap:'wrap'}}>
 		{fantasyTeams && fantasyTeams.map((team)=>(
 			<table key={team._id} style={{border: '1px solid black'}}>
@@ -62,7 +65,7 @@ const index = () => {
 					<td>{team.roster.TE}</td>
 				</tr>
 							{team.roster.bench.map((player, index)=>(
-						<tr key={index}>
+								<tr key={index}>
 							<td>Bench</td>
 							<td>{player}</td>
 						</tr>
@@ -71,6 +74,7 @@ const index = () => {
 		</table>
 		))}
 			</div>
+		</>
   )
 }
 
