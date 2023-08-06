@@ -21,7 +21,8 @@ console.log(team)
             },
             {
               $match: {
-                "players.name": { $regex: new RegExp(name, "i") }
+                "players.name": { $regex: new RegExp(name, "i") },
+                "players.position":{ $in: ["QB", "RB", "WR", "TE"] }
               }
             },
             {

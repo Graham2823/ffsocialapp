@@ -24,6 +24,7 @@ const index = () => {
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
     const [teamName, setTeamName] = useState()
 	const [showDropdown, setShowDropdown] = useState(false)
+	const [inputValue, setInputValue] = useState('')
 
 	useEffect(() => {
 		fetch('/api/teams', {
@@ -39,18 +40,24 @@ const index = () => {
 	}, []);
 
 	const handleInput = (e) => {
-		let name = e.target.value;
-		fetch(`/api/findPlayer?name=${name}&team=${selectedTeam}`, {
-			method: 'GET',
-			headers: { Accept: 'application/json' },
-		})
-			.then((res) => {
-				return res.json();
+		if(e.target.value === ''){
+			setShowDropdown(false)
+			setInputValue('')
+			return
+		}
+			let name = e.target.value;
+			setInputValue(name)
+			fetch(`/api/findPlayer?name=${name}&team=${selectedTeam}`, {
+				method: 'GET',
+				headers: { Accept: 'application/json' },
 			})
-			.then((players) => {
-				setSelectedPlayers(players);
-				setShowDropdown(true)
-			});
+				.then((res) => {
+					return res.json();
+				})
+				.then((players) => {
+					setSelectedPlayers(players);
+					setShowDropdown(true)
+				});
 	};
 
     const handleTeamName = (e)=>{
@@ -63,6 +70,7 @@ const index = () => {
 	const handleDropDown = (e) =>{
 		console.log("e", e)
 		setSelectedPlayer(e.target.text)
+		setInputValue(e.target.text)
 		setShowDropdown(false)
 	}
 
@@ -74,7 +82,7 @@ const index = () => {
 		);
 		console.log("player in submit",player);
 		if (player) {
-			setSelectedPlayer()
+			setInputValue('')
 			const playerPosition = player[0].players.position;
             if (playerPosition === 'QB' && fantasyTeam.QB !== '' ) {
                 if(fantasyTeam.bench.length>5){
@@ -176,6 +184,16 @@ const index = () => {
                         console.log(data)
                     });
     }
+
+	const handleSelectTeam = (e) =>{
+		console.log(e.target.value)
+		if (e.target.value === 'Players'){
+			setSelectedTeam('')
+		}else{
+			setSelectedTeam(e.target.value)
+		}
+	}
+
 	return (
 		<div>
 			<NavBar/>
@@ -183,14 +201,14 @@ const index = () => {
 			<form>
 				<input
 					type='text'
-					placeholder={selectedPlayer ? selectedPlayer : 'enter player name'}
-					value={selectedPlayer && selectedPlayer}
+					placeholder={'enter player name'}
+					value={inputValue}
 					onChange={(e) => handleInput(e)}></input>
 				{teams.length > 0 ? (
 					<select
 						name='Team'
 						value={selectedTeam}
-						onChange={(e) => setSelectedTeam(e.target.value)}>
+						onChange={(e) => handleSelectTeam(e)}>
 						<option value='Players' defaultValue>
 							Chose Team
 						</option>

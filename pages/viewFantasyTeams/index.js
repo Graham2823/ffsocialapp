@@ -17,7 +17,7 @@ const index = () => {
 				setFantasyTeams(data)
 				// console.log(data)
 			});
-    },[fantasyTeams])
+    },[])
 
   return (
 	<>
