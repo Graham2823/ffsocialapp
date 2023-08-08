@@ -9,10 +9,8 @@ const initialTeam = {
 	WR: [],
 	Flex: [],
 	TE: [],
-	// D_ST:"",
-	// Kicker:"",
 	bench: [],
-    teamName:''
+	teamName: '',
 };
 
 const index = () => {
@@ -21,9 +19,9 @@ const index = () => {
 	const [selectedPlayers, setSelectedPlayers] = useState([]);
 	const [selectedPlayer, setSelectedPlayer] = useState();
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
-    const [teamName, setTeamName] = useState()
-	const [showDropdown, setShowDropdown] = useState(false)
-	const [inputValue, setInputValue] = useState('')
+	const [teamName, setTeamName] = useState();
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [inputValue, setInputValue] = useState('');
 
 	useEffect(() => {
 		fetch('/api/teams', {
@@ -41,168 +39,142 @@ const index = () => {
 	useEffect(() => {
 		// This effect will trigger whenever fantasyTeam changes
 		// You can use it to force a re-render of the component
-	  }, [fantasyTeam]);
+	}, [fantasyTeam]);
 
 	const handleInput = (e) => {
-		if(e.target.value === ''){
-			setShowDropdown(false)
-			setInputValue('')
-			return
+		if (e.target.value === '') {
+			setShowDropdown(false);
+			setInputValue('');
+			return;
 		}
-			let name = e.target.value;
-			setInputValue(name)
-			fetch(`/api/findPlayer?name=${name}&team=${selectedTeam}`, {
-				method: 'GET',
-				headers: { Accept: 'application/json' },
+		let name = e.target.value;
+		setInputValue(name);
+		fetch(`/api/findPlayer?name=${name}&team=${selectedTeam}`, {
+			method: 'GET',
+			headers: { Accept: 'application/json' },
+		})
+			.then((res) => {
+				return res.json();
 			})
-				.then((res) => {
-					return res.json();
-				})
-				.then((players) => {
-					setSelectedPlayers(players);
-					setShowDropdown(true)
-				});
+			.then((players) => {
+				setSelectedPlayers(players);
+				setShowDropdown(true);
+			});
 	};
 
-    const handleTeamName = (e)=>{
-        setFantasyTeam((prevFantasyTeam) => ({
-            ...prevFantasyTeam,
-            teamName: e.target.value,
-        }));
-    }
+	const handleTeamName = (e) => {
+		setFantasyTeam((prevFantasyTeam) => ({
+			...prevFantasyTeam,
+			teamName: e.target.value,
+		}));
+	};
 
-	const handleDropDown = (e) =>{
-		console.log("e", e)
-		setSelectedPlayer(e.target.text)
-		setInputValue(e.target.text)
-		setShowDropdown(false)
-	}
+	const handleDropDown = (e) => {
+		console.log('e', e);
+		setSelectedPlayer(e.target.text);
+		setInputValue(e.target.text);
+		setShowDropdown(false);
+	};
 
-	const handleSubmit = (e) => {
+	// const handleAddPlayer = (e) => {
+	// 	e.preventDefault();
+	// 	const player = selectedPlayers.filter(
+	// 		(player) => player.players.name === selectedPlayer
+	// 	);
+
+	// 	const playerPosition = player[0].players.position;
+
+	// 	const position = Object.keys(fantasyTeam).filter((position)=> position === playerPosition)
+	// 		console.log("position", position)
+	// 	Object.keys(fantasyTeam).map(
+	// 		(position) =>
+	// 			Array.isArray(fantasyTeam[position]) && fantasyTeam[position] === playerPosition &&
+	// 			fantasyTeam[position].map((players) => (
+	// 				players.player === '' ?
+	// 				players.player = player[0].players.name :
+	// 				Array.isArray(fantasyTeam[Flex]) &&
+	// 			fantasyTeam[Flex].map((players)=>(
+	// 				players.player === '' ?
+	// 				players.player = player[0].players.name :
+	// 				players.player = players.player
+	// 			))
+	// 			))
+	// 	);
+	// 	console.log("ft after add", fantasyTeam)
+	// };
+
+	const handleAddPlayer = (e) => {
 		e.preventDefault();
-        console.log("selected player in submit", selectedPlayers)
-		const player = selectedPlayers.filter(
-			(player) => player.players.name === selectedPlayer
+		const player = selectedPlayers.find(
+		  (player) => player.players.name === selectedPlayer
 		);
-		console.log("player in submit",player);
-		if (player) {
-			setInputValue('')
-			const playerPosition = player[0].players.position;
-            if (playerPosition === 'QB' && fantasyTeam.QB !== '' ) {
-                if(fantasyTeam.bench.length>5){
-                    return
-                }
-                setFantasyTeam((prevFantasyTeam) => ({
-                    ...prevFantasyTeam,
-                    bench: [...prevFantasyTeam.bench, player[0].players.name],
-                }));
-			}else 
-            if (playerPosition === 'QB') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-                        QB: player[0].players.name,
-				}));
-			} else if (playerPosition === 'RB' && fantasyTeam.RB1 === '') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					RB1: player[0].players.name,
-				}));
-			} else if (playerPosition === 'RB' && fantasyTeam.RB2 === '') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					RB2: player[0].players.name,
-				}));
-			} else if (
-				playerPosition === 'RB' &&
-				fantasyTeam.RB1 !== '' &&
-				fantasyTeam.RB2 !== '' &&
-				fantasyTeam.Flex === ''
-			) {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					Flex: player[0].players.name,
-				}));
-			} else if (playerPosition === 'RB' && fantasyTeam.Flex !== '') {
-                if(fantasyTeam.bench.length>5){
-                    return
-                }
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					bench: [...prevFantasyTeam.bench, player[0].players.name],
-				}));
-			} else if (playerPosition === 'WR' && fantasyTeam.WR1 === '') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					WR1: player[0].players.name,
-				}));
-			} else if (playerPosition === 'WR' && fantasyTeam.WR2 === '') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					WR2: player[0].players.name,
-				}));
-			} else if (
-				playerPosition === 'WR' &&
-				fantasyTeam.WR1 !== '' &&
-				fantasyTeam.WR2 !== '' &&
-				fantasyTeam.Flex === ''
-			) {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					Flex: player[0].players.name,
-				}));
-			} else if (playerPosition === 'WR' && fantasyTeam.Flex !== '') {
-                if(fantasyTeam.bench.length>5){
-                    return
-                }
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					bench: [...prevFantasyTeam.bench, player[0].players.name],
-				}));
-            } else if (playerPosition === 'TE' && fantasyTeam.TE !== '' ) {
-                if(fantasyTeam.bench.length>5){
-                    return
-                }
-                setFantasyTeam((prevFantasyTeam) => ({
-                    ...prevFantasyTeam,
-                    bench: [...prevFantasyTeam.bench, player[0].players.name],
-                }));
-            }
-          else if (playerPosition === 'TE') {
-				setFantasyTeam((prevFantasyTeam) => ({
-					...prevFantasyTeam,
-					TE: player[0].players.name,
-				}));
-            }}
-        };
-        
-        const handleSubmitTeam = ()=>{
-                const queryString = new URLSearchParams(fantasyTeam).toString();
-                fetch(`/api/fantasyTeamAPI?${queryString}`, {
-                    method: 'POST',
-                    headers: { Accept: 'application/json' },
-                })
-                    .then((res) => {
-                        return res.json();
-                    })
-                    .then((data) => {
-                        console.log(data)
-                    });
-    }
-
-	const handleSelectTeam = (e) =>{
-		console.log(e.target.value)
-		if (e.target.value === 'Players'){
-			setSelectedTeam('')
-		}else{
-			setSelectedTeam(e.target.value)
+	  
+		if (!player) {
+		  return; // Handle invalid player
 		}
-	}
+	  
+		const copiedTeam = { ...fantasyTeam };
+		const playerPosition = player.players.position;
+	  
+		const positionArray = copiedTeam[playerPosition];
+	  
+		if (positionArray) {
+		  const emptyPlayer = positionArray.find((player) => player.player === '');
+	  
+		  if (emptyPlayer) {
+			emptyPlayer.player = player.players.name;
+		  } else if (copiedTeam.Flex) {
+			const flexArray = copiedTeam.Flex;
+	  
+			const emptyFlexPlayer = flexArray.find((player) => player.player === '');
+	  
+			if (emptyFlexPlayer) {
+			  emptyFlexPlayer.player = player.players.name;
+			} else if (copiedTeam.bench) {
+			  if (copiedTeam.bench.length < 6) {
+				copiedTeam.bench.push({position: "Bench", player: player.players.name});
+			  }
+			}
+		  }
+		}
+	  
+		setFantasyTeam({ ...copiedTeam });
+		console.log('ft after add', copiedTeam); // Log the copiedTeam for accurate information
+	  };
+	  
 
-	console.log("fantastTeam in create", fantasyTeam)
+
+	const handleSubmitTeam = () => {
+		const queryString = new URLSearchParams(fantasyTeam).toString();
+		fetch(`/api/fantasyTeamAPI?${queryString}`, {
+			method: 'POST',
+			headers: { Accept: 'application/json' },
+		})
+			.then((res) => {
+				return res.json();
+			})
+			.then((data) => {
+				console.log(data);
+			});
+	};
+
+	const handleSelectTeam = (e) => {
+		console.log(e.target.value);
+		if (e.target.value === 'Players') {
+			setSelectedTeam('');
+		} else {
+			setSelectedTeam(e.target.value);
+		}
+	};
+
+	console.log('fantastTeam in create', fantasyTeam);
 	return (
 		<div>
-			<NavBar/>
-			<ChoseRosterFormat setFantasyTeam={setFantasyTeam} fantasyTeam = {fantasyTeam}/>
+			<NavBar />
+			<ChoseRosterFormat
+				setFantasyTeam={setFantasyTeam}
+				fantasyTeam={fantasyTeam}
+			/>
 			<h2>Add your Fantasy Team:</h2>
 			<form>
 				<input
@@ -230,40 +202,47 @@ const index = () => {
 				<div>
 					{selectedPlayers.length > 0 && (
 						<Dropdown.Menu show={showDropdown} value={selectedPlayer}>
-							{selectedPlayers.map((player) => (
-								<Dropdown.Item value={player.players.name} key={player.players.index} onClick={(e) => handleDropDown(e)}>
+							{selectedPlayers.map((player, index) => (
+								<Dropdown.Item
+									value={player.players.name}
+									key={index}
+									onClick={(e) => handleDropDown(e)}>
 									{player.players.name}
 								</Dropdown.Item>
 							))}
 						</Dropdown.Menu>
 					)}
 				</div>
-				<button onClick={(e) => handleSubmit(e)}>Add Player</button>
-                <input type='text' placeholder='Enter Team Name' onChange={(e)=> handleTeamName(e) }></input>
+				<button onClick={(e) => handleAddPlayer(e)}>Add Player</button>
+				<input
+					type='text'
+					placeholder='Enter Team Name'
+					onChange={(e) => handleTeamName(e)}></input>
 			</form>
 			<div>
-			<table>
-        <thead>
-				<tr>
-					<th>Position</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-            <tbody>
-  {Object.keys(fantasyTeam).map((position) =>
-    Array.isArray(fantasyTeam[position]) && fantasyTeam[position].length > 0 ? (
-      fantasyTeam[position].map((player, index) => (
-        <tr key={index}>
-          <td>{player.position}</td>
-          <td>{player.player}</td>
-        </tr>
-      ))
-    ) : null
-  )}
-</tbody>
-        </table>
+				<table>
+					<thead>
+						<tr>
+							<th>Position</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Object.keys(fantasyTeam).map((position) =>
+							Array.isArray(fantasyTeam[position]) &&
+							fantasyTeam[position].length > 0
+								? fantasyTeam[position].map((player, index) => (
+										<tr key={index}>
+											<td>{player.position}</td>
+											<td>{player.player}</td>
+										</tr>
+								  ))
+								: null
+						)}
+					</tbody>
+				</table>
 
-                <button onClick={handleSubmitTeam}>Add Team</button>
+				<button onClick={handleSubmitTeam}>Add Team</button>
 			</div>
 		</div>
 	);
@@ -271,7 +250,8 @@ const index = () => {
 
 export default index;
 
-{/* <table>
+{
+	/* <table>
 	<thead>
 		<tr>
 			<th>Position</th>
@@ -315,4 +295,5 @@ export default index;
 				</tr>
 			))}
 	</tbody>
-</table> */}
+</table> */
+}
