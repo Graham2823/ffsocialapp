@@ -4,26 +4,27 @@ const initialState = {
 }
 
 
-const choseRosterFormat = () => {
+const ChoseRosterFormat = ({setFantasyTeam, fantasyTeam}) => {
     const [rosterFormat, setRosterFormat] = useState(initialState)
     
     
     const handleFormatRoster = ( e)=>{
         const amount = e.target.value
         const position = e.target.name
-        const updatedRoster = {...rosterFormat}
+        const updatedRoster = {...fantasyTeam}
+        console.log("ur", updatedRoster)
         if(amount > 1){
             for(let i=0; i<amount; i++){
-                    updatedRoster[position + `${i + 1}`]=''
+                    updatedRoster[position].push({position: `${position}${i+1}`, player:''})
             }
         }else{
-            updatedRoster[position]=''
+            updatedRoster[position].push({position: position, player:''})
         }
-        
-       setRosterFormat(updatedRoster)
+    //    setRosterFormat(updatedRoster)
+       setFantasyTeam(updatedRoster)
     }
 
-console.log(rosterFormat)
+
   return (
     <div>
         <form>
@@ -42,7 +43,7 @@ console.log(rosterFormat)
             <p><label>How many TEs in the starting lineup?
             <input type='text' name='TE' onChange={(e)=> handleFormatRoster(e)}></input></label></p>
         </form>
-        <table>
+        {/* <table>
         <thead>
 				<tr>
 					<th>Position</th>
@@ -57,9 +58,9 @@ console.log(rosterFormat)
                 </tr>
                ))}
             </tbody>
-        </table>
+        </table> */}
     </div>
   )
 }
 
-export default choseRosterFormat
+export default ChoseRosterFormat

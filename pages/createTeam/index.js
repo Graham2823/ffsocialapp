@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navBar';
 import { Dropdown } from 'react-bootstrap';
+import ChoseRosterFormat from '../components/choseRosterFormat';
 
 const initialTeam = {
-	QB: '',
-	RB1: '',
-	RB2: '',
-	WR1: '',
-	WR2: '',
-	Flex: '',
-	TE: '',
+	QB: [],
+	RB: [],
+	WR: [],
+	Flex: [],
+	TE: [],
 	// D_ST:"",
 	// Kicker:"",
 	bench: [],
@@ -38,6 +37,11 @@ const index = () => {
 				setTeams(data);
 			});
 	}, []);
+
+	useEffect(() => {
+		// This effect will trigger whenever fantasyTeam changes
+		// You can use it to force a re-render of the component
+	  }, [fantasyTeam]);
 
 	const handleInput = (e) => {
 		if(e.target.value === ''){
@@ -194,9 +198,11 @@ const index = () => {
 		}
 	}
 
+	console.log("fantastTeam in create", fantasyTeam)
 	return (
 		<div>
 			<NavBar/>
+			<ChoseRosterFormat setFantasyTeam={setFantasyTeam} fantasyTeam = {fantasyTeam}/>
 			<h2>Add your Fantasy Team:</h2>
 			<form>
 				<input
@@ -230,65 +236,33 @@ const index = () => {
 								</Dropdown.Item>
 							))}
 						</Dropdown.Menu>
-						// <select
-						// 	name='Players'
-						// 	value={selectedPlayer}
-						// 	onChange={(e) => setSelectedPlayer(e.target.value)}>
-						// 	<option value='Players' defaultValue>
-						// 		Click for Players
-						// 	</option>
-						// </select>
 					)}
 				</div>
 				<button onClick={(e) => handleSubmit(e)}>Add Player</button>
                 <input type='text' placeholder='Enter Team Name' onChange={(e)=> handleTeamName(e) }></input>
 			</form>
 			<div>
-				<table>
-					<thead>
-						<tr>
-							<th>Position</th>
-							<th>Name</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>QB</td>
-							<td>{fantasyTeam.QB}</td>
-						</tr>
-						<tr>
-							<td>RB</td>
-							<td>{fantasyTeam.RB1}</td>
-						</tr>
-						<tr>
-							<td>RB</td>
-							<td>{fantasyTeam.RB2}</td>
-						</tr>
-						<tr>
-							<td>WR</td>
-							<td>{fantasyTeam.WR1}</td>
-						</tr>
-						<tr>
-							<td>WR</td>
-							<td>{fantasyTeam.WR2}</td>
-						</tr>
-						<tr>
-							<td>Flex</td>
-							<td>{fantasyTeam.Flex}</td>
-						</tr>
-						<tr>
-							<td>TE</td>
-							<td>{fantasyTeam.TE}</td>
-						</tr>
-						{fantasyTeam.bench.length > 0 &&
-							fantasyTeam.bench.map((player, index) => (
-								<tr key={index}>
-									<td>Bench</td>
-									<td>{player}</td>
-								</tr>
-							))}
-					</tbody>
-				</table>
+			<table>
+        <thead>
+				<tr>
+					<th>Position</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+            <tbody>
+  {Object.keys(fantasyTeam).map((position) =>
+    Array.isArray(fantasyTeam[position]) && fantasyTeam[position].length > 0 ? (
+      fantasyTeam[position].map((player, index) => (
+        <tr key={index}>
+          <td>{player.position}</td>
+          <td>{player.player}</td>
+        </tr>
+      ))
+    ) : null
+  )}
+</tbody>
+        </table>
+
                 <button onClick={handleSubmitTeam}>Add Team</button>
 			</div>
 		</div>
@@ -296,3 +270,49 @@ const index = () => {
 };
 
 export default index;
+
+{/* <table>
+	<thead>
+		<tr>
+			<th>Position</th>
+			<th>Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>QB</td>
+			<td>{fantasyTeam.QB}</td>
+		</tr>
+		<tr>
+			<td>RB</td>
+			<td>{fantasyTeam.RB1}</td>
+		</tr>
+		<tr>
+			<td>RB</td>
+			<td>{fantasyTeam.RB2}</td>
+		</tr>
+		<tr>
+			<td>WR</td>
+			<td>{fantasyTeam.WR1}</td>
+		</tr>
+		<tr>
+			<td>WR</td>
+			<td>{fantasyTeam.WR2}</td>
+		</tr>
+		<tr>
+			<td>Flex</td>
+			<td>{fantasyTeam.Flex}</td>
+		</tr>
+		<tr>
+			<td>TE</td>
+			<td>{fantasyTeam.TE}</td>
+		</tr>
+		{fantasyTeam.bench.length > 0 &&
+			fantasyTeam.bench.map((player, index) => (
+				<tr key={index}>
+					<td>Bench</td>
+					<td>{player}</td>
+				</tr>
+			))}
+	</tbody>
+</table> */}
