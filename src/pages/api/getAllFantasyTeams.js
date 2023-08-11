@@ -1,6 +1,6 @@
 
-import clientPromise from "../../lib/mongodb";
-import FantasyTeam from "../../models/fantasyTeam";
+import clientPromise from "../../../lib/mongodb";
+import FantasyTeam from "../../../models/fantasyTeam";
 
 export default async (req, res) => {
 	console.log(req.query)

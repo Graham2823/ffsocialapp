@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../components/navBar';
+import NavBar from '../../components/navBar';
 import { Dropdown } from 'react-bootstrap';
-import ChoseRosterFormat from '../components/choseRosterFormat';
+import ChoseRosterFormat from '../../components/choseRosterFormat';
 
 const initialTeam = {
 	QB: [],
@@ -146,9 +146,18 @@ const index = () => {
 
 	const handleSubmitTeam = () => {
 		const queryString = new URLSearchParams(fantasyTeam).toString();
-		fetch(`/api/fantasyTeamAPI?${queryString}`, {
+		fetch(`/api/fantasyTeamAPI`, {
 			method: 'POST',
 			headers: { Accept: 'application/json' },
+			body: JSON.stringify({
+				teamName: fantasyTeam.teamName,
+				QB: fantasyTeam.QB,
+				RB: fantasyTeam.RB,
+				Flex: fantasyTeam.Flex,
+				WR:fantasyTeam.WR,
+				TE: fantasyTeam.TE,
+				bench: fantasyTeam.bench
+				})
 		})
 			.then((res) => {
 				return res.json();
