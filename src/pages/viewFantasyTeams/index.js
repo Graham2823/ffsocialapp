@@ -36,43 +36,20 @@ const index = () => {
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>QB</td>
-					<td>{team.roster.QB}</td>
-				</tr>
-				<tr>
-					<td>RB</td>
-					<td>{team.roster.RB1}</td>
-				</tr>
-				<tr>
-					<td>RB</td>
-					<td>{team.roster.RB2}</td>
-				</tr>
-				<tr>
-					<td>WR</td>
-					<td>{team.roster.WR1}</td>
-				</tr>
-				<tr>
-					<td>WR</td>
-					<td>{team.roster.WR2}</td>
-				</tr>
-				<tr>
-					<td>Flex</td>
-					<td>{team.roster.Flex}</td>
-				</tr>
-				<tr>
-					<td>TE</td>
-					<td>{team.roster.TE}</td>
-				</tr>
-							{team.roster.bench.map((player, index)=>(
-								<tr key={index}>
-							<td>Bench</td>
-							<td>{player}</td>
-						</tr>
-							))}
-			</tbody>
+						{Object.keys(team.roster).map((position) =>
+							Array.isArray(team.roster[position]) &&
+							team.roster[position].length > 0
+								? team.roster[position].map((player, index) => (
+									<tr key={index}>
+											<td>{player.position}</td>
+											<td>{player.player}</td>
+										</tr>
+								  ))
+								  : null
+						)}
+					</tbody>
 		</table>
-		))}
+								  ))}
 			</div>
 		</>
   )
