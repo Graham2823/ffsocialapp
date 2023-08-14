@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import NavBar from '../../components/navBar'
+import NavBar from '../../components/navbar/NavBar'
 
 
 const index = () => {
