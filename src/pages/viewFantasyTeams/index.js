@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../components/navbar/NavBar'
-import { Button } from 'react-bootstrap'
+import { Button, Container, Table } from 'react-bootstrap'
+
+
 
 
 const index = () => {
@@ -24,9 +26,9 @@ const index = () => {
 	<>
 	
 	<NavBar/>
-    <div style={{display:'flex', justifyContent:'space-evenly', flexWrap:'wrap'}}>
+    <Container style={{display:'flex', justifyContent:'space-evenly', flexWrap:'wrap'}}>
 		{fantasyTeams && fantasyTeams.map((team)=>(
-			<table key={team._id} style={{border: '1px solid black'}}>
+			<Table key={team._id} striped bordered hover size='sm' style={{width:'350px'}}>
 			<thead>
 				<tr>
 					<td>
@@ -34,8 +36,6 @@ const index = () => {
 					</td>
 					<td>
 						<Button variant='primary'>Edit</Button>
-					</td>
-					<td> 
 						<Button variant='danger' >Delete</Button>
 					</td>
 				</tr>
@@ -57,9 +57,9 @@ const index = () => {
 								  : null
 						)}
 					</tbody>
-		</table>
+		</Table>
 								  ))}
-			</div>
+			</Container>
 		</>
   )
 }

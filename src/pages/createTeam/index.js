@@ -7,6 +7,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Container, Table, Button } from 'react-bootstrap';
 
 
 
@@ -84,7 +85,7 @@ const index = () => {
 	console.log("ft2", fantasyTeam)
 
 	return (
-		<div>
+		<Container>
 			<NavBar />
 			<ToastContainer />
 			{showRosterParams &&
@@ -100,8 +101,8 @@ const index = () => {
 			<>
 			
 			<CreateFantasyTeam fantasyTeam={fantasyTeam} setFantasyTeam={setFantasyTeam} teams={teams}></CreateFantasyTeam>
-			<div className='centered'>
-				<table>
+			<Container className='centered'>
+				<Table striped bordered hover size='sm' style={{height:'550px'}}>
 					<thead>
 						<tr>
 							<th>Position</th>
@@ -121,13 +122,13 @@ const index = () => {
 								  : null
 								  )}
 					</tbody>
-				</table>
+				</Table>
 
-				<button onClick={handleSubmitTeam}>Add Team</button>
-			</div>
+				<Button variant='primary' onClick={handleSubmitTeam}>Add Team</Button>
+			</Container>
 								  </>
 			}
-		</div>
+		</Container>
 	);
 };
 
