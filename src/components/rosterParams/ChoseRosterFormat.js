@@ -26,7 +26,7 @@ const ChoseRosterFormat = ({setFantasyTeam, fantasyTeam}) => {
 
 
   return (
-    <div>
+    <div className='centered'>
         <form>
             <p>
             <label>How many Qbs in the starting lineup?

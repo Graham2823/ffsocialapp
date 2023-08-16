@@ -95,7 +95,9 @@ const CreateFantasyTeam = ({fantasyTeam, setFantasyTeam, teams}) => {
 	  
 
   return (
-    <div><form>
+    <div className='centered'>
+    <h2>Add your Fantasy Team:</h2>    
+    <form>
     <input
         type='text'
         placeholder={'enter player name'}

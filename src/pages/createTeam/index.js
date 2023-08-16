@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../../components/navbar/NavBar';
 import ChoseRosterFormat from '../../components/rosterParams/ChoseRosterFormat';
 import CreateFantasyTeam from '../../components/createFantasyTeam/createFantasyTeam';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const initialTeam = {
 	QB: [],
@@ -16,6 +18,7 @@ const initialTeam = {
 const index = () => {
 	const [teams, setTeams] = useState([]);
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
+	const [showRosterParams, setShowRosterParams] = useState(true)
 	
 
 	useEffect(() => {
@@ -28,6 +31,7 @@ const index = () => {
 			})
 			.then((data) => {
 				setTeams(data);
+				setShowRosterParams(true)
 			});
 	}, []);
 
@@ -64,13 +68,20 @@ const index = () => {
 	return (
 		<div>
 			<NavBar />
+			{showRosterParams &&
+			<>
 			<ChoseRosterFormat
 				setFantasyTeam={setFantasyTeam}
 				fantasyTeam={fantasyTeam}
 			/>
-			<h2>Add your Fantasy Team:</h2>
+		<FontAwesomeIcon className='centered' icon={faArrowRight} size='5x' onClick={()=>setShowRosterParams(false)}/>
+			</>
+		}
+			{showRosterParams === false &&
+			<>
+			
 			<CreateFantasyTeam fantasyTeam={fantasyTeam} setFantasyTeam={setFantasyTeam} teams={teams}></CreateFantasyTeam>
-			<div>
+			<div className='centered'>
 				<table>
 					<thead>
 						<tr>
@@ -82,19 +93,21 @@ const index = () => {
 						{Object.keys(fantasyTeam).map((position) =>
 							Array.isArray(fantasyTeam[position]) &&
 							fantasyTeam[position].length > 0
-								? fantasyTeam[position].map((player, index) => (
-										<tr key={index}>
+							? fantasyTeam[position].map((player, index) => (
+								<tr key={index}>
 											<td>{player.position}</td>
 											<td>{player.player}</td>
 										</tr>
 								  ))
-								: null
-						)}
+								  : null
+								  )}
 					</tbody>
 				</table>
 
 				<button onClick={handleSubmitTeam}>Add Team</button>
 			</div>
+								  </>
+			}
 		</div>
 	);
 };

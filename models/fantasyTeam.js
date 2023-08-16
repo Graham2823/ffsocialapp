@@ -10,56 +10,56 @@ const fantasyTeamSchema = new Schema({
 		QB: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 		RB: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 		Flex: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 		WR: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 		TE: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 		bench: [{
 			position: {
 				type: String,
-				required: true,
+				require: true,
 			},
 			player: {
 				type: String,
-				required: true,
+				require: true,
 			}}],
 	},
 });
