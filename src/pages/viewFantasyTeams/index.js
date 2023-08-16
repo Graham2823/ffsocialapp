@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../components/navbar/NavBar'
+import { Button } from 'react-bootstrap'
 
 
 const index = () => {
@@ -28,7 +29,15 @@ const index = () => {
 			<table key={team._id} style={{border: '1px solid black'}}>
 			<thead>
 				<tr>
+					<td>
 					Team Name: {team.teamName}
+					</td>
+					<td>
+						<Button variant='primary'>Edit</Button>
+					</td>
+					<td> 
+						<Button variant='danger' >Delete</Button>
+					</td>
 				</tr>
 				<tr>
 					<th>Position</th>

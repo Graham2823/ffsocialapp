@@ -73,12 +73,13 @@ const CreateFantasyTeam = ({fantasyTeam, setFantasyTeam, teams}) => {
 			if (emptyFlexPlayer) {
 			  emptyFlexPlayer.player = player.players.name;
 			} else if (copiedTeam.bench) {
-			  if (copiedTeam.bench.length < 6) {
-				copiedTeam.bench.push({position: "Bench", player: player.players.name});
-			  }
+			  const benchArray = copiedTeam.bench;
+			const emptyBenchPlayer = benchArray.find((player) => player.player === '');
+			if (emptyBenchPlayer) {
+			  emptyBenchPlayer.player = player.players.name;
 			}
 		  }
-		}
+		}}
 	  
 		setFantasyTeam({ ...copiedTeam });
 		console.log('ft after add', copiedTeam); // Log the copiedTeam for accurate information

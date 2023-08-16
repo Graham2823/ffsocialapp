@@ -24,24 +24,33 @@ const ChoseRosterFormat = ({setFantasyTeam, fantasyTeam}) => {
        setFantasyTeam(updatedRoster)
     }
 
+    function handleInput(input) {
+        if (input.value > input.getAttribute("max")) {
+          input.value = input.getAttribute("max");
+        }
+      }
+      
+
 
   return (
     <div className='centered'>
         <form>
             <p>
-            <label>How many Qbs in the starting lineup?
-            <input type='text' name='QB' onChange={(e)=> handleFormatRoster(e)}></input></label>
+            <label>How many Qbs in the starting lineup(Max: 2)?
+            <input type='number' max="2" name='QB' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label>
             </p>
-            <p><label>How many RBs in the starting lineup?
-            <input type='text' name='RB' onChange={(e)=> handleFormatRoster(e)}></input></label></p>
+            <p><label>How many RBs in the starting lineup (Max: 3)?
+            <input type='number' max="3" name='RB' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label></p>
             
-            <p><label>How many WRs in the starting lineup?
-            <input type='text' name='WR' onChange={(e)=> handleFormatRoster(e)}></input></label></p>
-            <p><label>How many RB/WR flex spots in the starting lineup?
-            <input type='text' name='Flex' onChange={(e)=> handleFormatRoster(e)}></input></label></p>
+            <p><label>How many WRs in the starting lineup (Max: 4)?
+            <input type='number' max="4" name='WR' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label></p>
+            <p><label>How many RB/WR flex spots in the starting lineup (Max: 2)?
+            <input type='number' max="2" name='Flex' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label></p>
             
-            <p><label>How many TEs in the starting lineup?
-            <input type='text' name='TE' onChange={(e)=> handleFormatRoster(e)}></input></label></p>
+            <p><label>How many TEs in the starting lineup (Max: 2)?
+            <input type='number' max="2" name='TE' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label></p>
+            <p><label>How many Bench Spots (Max: 8)?
+            <input type='number' max="8" name='bench' onInput={(e) => handleInput(e.target)} onChange={(e)=> handleFormatRoster(e)}></input></label></p>
         </form>
         {/* <table>
         <thead>

@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import NavBar from '../../components/navbar/NavBar';
 import ChoseRosterFormat from '../../components/rosterParams/ChoseRosterFormat';
 import CreateFantasyTeam from '../../components/createFantasyTeam/createFantasyTeam';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const initialTeam = {
 	QB: [],
@@ -19,7 +24,16 @@ const index = () => {
 	const [teams, setTeams] = useState([]);
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
 	const [showRosterParams, setShowRosterParams] = useState(true)
-	
+	const [teamCreated, setTeamCreated] = useState(false)
+	const router = useRouter()
+
+	useEffect(()=>{
+
+		console.log("Use Effect Ran")
+		setFantasyTeam(initialTeam)
+		setShowRosterParams(true)
+		setTeamCreated(false)	
+	},[teamCreated])
 
 	useEffect(() => {
 		fetch('/api/teams', {
@@ -62,12 +76,17 @@ const index = () => {
 			})
 			.then((data) => {
 				console.log(data);
+				toast.success('Team created successfully');
+				router.push('/createTeam')
+				setTeamCreated(true)
 			});
 	};
+	console.log("ft2", fantasyTeam)
 
 	return (
 		<div>
 			<NavBar />
+			<ToastContainer />
 			{showRosterParams &&
 			<>
 			<ChoseRosterFormat
