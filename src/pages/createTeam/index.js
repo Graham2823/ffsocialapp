@@ -7,7 +7,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Container, Table, Button } from 'react-bootstrap';
+import { Container, Table, Button, Form } from 'react-bootstrap';
 
 
 
@@ -56,10 +56,17 @@ const index = () => {
 		// You can use it to force a re-render of the component
 	}, [fantasyTeam]);
 
+	const handleTeamName = (e) => {
+		setFantasyTeam((prevFantasyTeam) => ({
+			...prevFantasyTeam,
+			teamName: e.target.value,
+		}));
+	};
+
 
 	const handleSubmitTeam = () => {
 		const queryString = new URLSearchParams(fantasyTeam).toString();
-		fetch(`/api/fantasyTeamAPI`, {
+		fetch(`/api/addFantasyTeam`, {
 			method: 'POST',
 			headers: { Accept: 'application/json' },
 			body: JSON.stringify({
@@ -123,7 +130,13 @@ const index = () => {
 								  )}
 					</tbody>
 				</Table>
-
+				<Form>
+				<Form.Group>
+					<Form.Control type='text'
+					placeholder='Enter Team Name'
+					onChange={(e) => handleTeamName(e)}/>
+				</Form.Group>
+			</Form>
 				<Button variant='primary' onClick={handleSubmitTeam}>Add Team</Button>
 			</Container>
 								  </>

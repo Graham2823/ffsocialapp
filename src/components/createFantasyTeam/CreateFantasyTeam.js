@@ -29,13 +29,6 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, teams }) => {
 			});
 	};
 
-	const handleTeamName = (e) => {
-		setFantasyTeam((prevFantasyTeam) => ({
-			...prevFantasyTeam,
-			teamName: e.target.value,
-		}));
-	};
-
 	const handleDropDown = (e) => {
 		console.log('e', e);
 		setSelectedPlayer(e.target.text);
@@ -107,25 +100,6 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, teams }) => {
 					value={inputValue}
 					onChange={(e) => handleInput(e)}/>
 				</Form.Group>
-				{/* <Form.Group>
-				{teams.length > 0 ? (
-					<Form.Select
-						name='Team'
-						value={selectedTeam}
-						onChange={(e) => handleSelectTeam(e)}>
-						<option value='Players' defaultValue>
-							Chose Team
-						</option>
-						{teams.map((team) => (
-							<option key={team._id} value={team.team[0]}>
-								{team.team[0]}
-							</option>
-						))}
-					</Form.Select>
-				) : (
-					<Form.Text>Loading teams...</Form.Text>
-				)}
-				</Form.Group> */}
 				<Form.Group>
 				{selectedPlayers.length > 0 && (
 						<Dropdown.Menu show={showDropdown} value={selectedPlayer}>
@@ -140,52 +114,7 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, teams }) => {
 						</Dropdown.Menu>
 							)}
 				</Form.Group>
-				<Form.Group>
-					<Form.Control type='text'
-					placeholder='Enter Team Name'
-					onChange={(e) => handleTeamName(e)}/>
-				</Form.Group>
 				<Button onClick={(e) => handleAddPlayer(e)}>Add Player</Button>
-				{/* <input
-					type='text'
-					placeholder={'enter player name'}
-					value={inputValue}
-					onChange={(e) => handleInput(e)}></input>
-				{teams.length > 0 ? (
-					<select
-						name='Team'
-						value={selectedTeam}
-						onChange={(e) => handleSelectTeam(e)}>
-						<option value='Players' defaultValue>
-							Chose Team
-						</option>
-						{teams.map((team) => (
-							<option key={team._id} value={team.team[0]}>
-								{team.team[0]}
-							</option>
-						))}
-					</select>
-				) : (
-					<p>Loading teams...</p>
-				)} */}
-				{/* <div>
-					{selectedPlayers.length > 0 && (
-						<Dropdown.Menu show={showDropdown} value={selectedPlayer}>
-							{selectedPlayers.map((player, index) => (
-								<Dropdown.Item
-									value={player.players.name}
-									key={index}
-									onClick={(e) => handleDropDown(e)}>
-									{player.players.name}
-								</Dropdown.Item>
-							))}
-						</Dropdown.Menu>
-					)}
-				</div>
-				<input
-					type='text'
-					placeholder='Enter Team Name'
-					onChange={(e) => handleTeamName(e)}></input> */}
 			</Form>
 		</Container>
 	);

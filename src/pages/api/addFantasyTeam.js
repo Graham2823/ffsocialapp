@@ -1,33 +1,4 @@
-// import FantasyTeam from '../../models/fantasyTeam';
 
-// export default async (req, res) => {
-// 	console.log('req', req.query.team.QB);
-// 	console.log("hit")
-// 	try {
-// 		const newFantasyTeam = new FantasyTeam({
-// 			// Add the properties of the FantasyTeam here
-// 			// For example:
-// 			teamName: 'Your Team Name',
-// 			// Add more properties as needed based on your schema
-// 			roster: {
-// 				QB: req.query.team.QB,
-// 				RB1: req.query.team.RB1,
-// 				RB2: req.query.team.RB2,
-// 				Flex: req.query.team.Flex,
-// 				WR1: req.query.team.WR1,
-// 				WR2: req.query.team.WR2,
-// 				TE: req.query.team.TE,
-// 				Bench: req.query.team.Bench,
-// 			},
-// 		});
-
-// 		// Save the newFantasyTeam document to the database
-// 		const result = await newFantasyTeam.save();
-// 		res.json(result);
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// };
 
 import clientPromise from "../../../lib/mongodb";
 import FantasyTeam from "../../../models/fantasyTeam";

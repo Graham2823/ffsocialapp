@@ -7,6 +7,7 @@ import { Button, Container, Table } from 'react-bootstrap'
 
 const index = () => {
     const [fantasyTeams, setFantasyTeams] = useState()
+	const [teamDeleted, setTeamDeleted] = useState(false)
 
     useEffect(()=>{
         fetch(`/api/getAllFantasyTeams`, {
@@ -20,7 +21,26 @@ const index = () => {
 				setFantasyTeams(data)
 				// console.log(data)
 			});
-    },[])
+    },[teamDeleted])
+
+	const handleDelete = (id)=>{
+		setTeamDeleted(true)
+		fetch(`/api/deleteFantasyTeam?teamID=${id}`,{
+			method:'DELETE',
+			headers: { Accept: 'application/json' },
+		})
+		.then((res) => res.json())
+    .then((data) => {
+      // Handle the response data if needed
+      console.log("Team deleted:", data);
+      setTeamDeleted(false);
+    })
+		.catch((error) => {
+			console.error('Error deleting team:', error);
+			// Handle the error if needed
+			setTeamDeleted(false);
+		  });	
+	}
 
   return (
 	<>
@@ -36,7 +56,7 @@ const index = () => {
 					</td>
 					<td>
 						<Button variant='primary'>Edit</Button>
-						<Button variant='danger' >Delete</Button>
+						<Button variant='danger' onClick={()=>handleDelete(team._id)} >Delete</Button>
 					</td>
 				</tr>
 				<tr>
