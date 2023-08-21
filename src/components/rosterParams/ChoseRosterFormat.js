@@ -4,15 +4,19 @@ import { Container, Form } from 'react-bootstrap';
 const initialState = {};
 
 const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
-	const [rosterFormat, setRosterFormat] = useState(initialState);
-
 	const handleFormatRoster = (e) => {
-		const amount = e.target.value;
+		const amount = parseInt(e.target.value, 10);
+    const maxAmount = parseInt(e.target.getAttribute('max'), 10);
 		const position = e.target.name;
+		const input = e.target
+		if (amount > maxAmount) {
+			input.value = maxAmount
+		}
 		const updatedRoster = { ...fantasyTeam };
-		console.log('ur', updatedRoster);
-		if (amount > 1) {
-			for (let i = 0; i < amount; i++) {
+		if (amount >= 1) {
+			updatedRoster[position] = []
+			const loopCount = Math.min(amount, maxAmount);
+			for (let i = 0; i < loopCount; i++) {
 				updatedRoster[position].push({
 					position: `${position}${i + 1}`,
 					player: '',
@@ -21,15 +25,9 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 		} else {
 			updatedRoster[position].push({ position: position, player: '' });
 		}
-		//    setRosterFormat(updatedRoster)
 		setFantasyTeam(updatedRoster);
 	};
 
-	function handleInput(input) {
-		if (input.value > input.getAttribute('max')) {
-			input.value = input.getAttribute('max');
-		}
-	}
 
 	return (
 		<Container className='centered'>
@@ -40,7 +38,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='2'
 						name='QB'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 				<Form.Group>
@@ -49,7 +46,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='3'
 						name='RB'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 				<Form.Group>
@@ -58,7 +54,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='4'
 						name='WR'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 				<Form.Group>
@@ -69,7 +64,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='2'
 						name='Flex'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 				<Form.Group>
@@ -78,7 +72,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='2'
 						name='TE'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 				<Form.Group>
@@ -87,7 +80,6 @@ const ChoseRosterFormat = ({ setFantasyTeam, fantasyTeam }) => {
 						type='number'
 						max='8'
 						name='bench'
-						onInput={(e) => handleInput(e.target)}
 						onChange={(e) => handleFormatRoster(e)}/>
 				</Form.Group>
 			</Form>
