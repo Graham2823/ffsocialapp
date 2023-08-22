@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../components/navbar/NavBar'
-import { Button, Container, Table } from 'react-bootstrap'
+import { Button, Container, Table} from 'react-bootstrap'
+import Link from 'next/link'
 
 
 
@@ -42,6 +43,7 @@ const index = () => {
 		  });	
 	}
 
+
   return (
 	<>
 	
@@ -55,7 +57,10 @@ const index = () => {
 					Team Name: {team.teamName}
 					</td>
 					<td>
-						<Button variant='primary'>Edit</Button>
+						<Button variant='primary'>
+							<Link href={`/viewFantasyTeams/editTeam?id=${team._id}`} as={`/viewFantasyTeams/editTeam?id=${team._id}`}>
+							Edit
+							</Link></Button>
 						<Button variant='danger' onClick={()=>handleDelete(team._id)} >Delete</Button>
 					</td>
 				</tr>

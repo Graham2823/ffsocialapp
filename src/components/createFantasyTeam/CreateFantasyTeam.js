@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Dropdown, Form, Button } from 'react-bootstrap';
-const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, teams }) => {
+const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
 	const [selectedTeam, setSelectedTeam] = useState('');
 	const [selectedPlayers, setSelectedPlayers] = useState([]);
 	const [selectedPlayer, setSelectedPlayer] = useState();
@@ -30,22 +30,23 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, teams }) => {
 	};
 
 	const handleDropDown = (e) => {
-		console.log('e', e);
 		setSelectedPlayer(e.target.text);
+		setPlayerToAdd(e.target.text)
 		setInputValue(e.target.text);
 		setShowDropdown(false);
 	};
-
+	
 	const handleAddPlayer = (e) => {
 		e.preventDefault();
+		console.log('selected',selectedPlayer)
 		const player = selectedPlayers.find(
 			(player) => player.players.name === selectedPlayer
-		);
+			);
+			console.log('player',player)
 
 		if (!player) {
 			return; // Handle invalid player
 		}
-
 		const copiedTeam = { ...fantasyTeam };
 		const playerPosition = player.players.position;
 
