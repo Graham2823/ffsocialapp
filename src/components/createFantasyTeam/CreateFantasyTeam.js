@@ -31,18 +31,22 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
 
 	const handleDropDown = (e) => {
 		setSelectedPlayer(e.target.text);
-		setPlayerToAdd(e.target.text)
+		if(setPlayerToAdd){
+			const player = selectedPlayers.find(
+				(player) => player.players.name === e.target.text
+				);
+				console.log('player',player)
+			setPlayerToAdd(player)
+		}
 		setInputValue(e.target.text);
 		setShowDropdown(false);
 	};
 	
 	const handleAddPlayer = (e) => {
 		e.preventDefault();
-		console.log('selected',selectedPlayer)
 		const player = selectedPlayers.find(
 			(player) => player.players.name === selectedPlayer
 			);
-			console.log('player',player)
 
 		if (!player) {
 			return; // Handle invalid player
@@ -79,11 +83,9 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
 		}
 
 		setFantasyTeam({ ...copiedTeam });
-		console.log('ft after add', copiedTeam); // Log the copiedTeam for accurate information
 	};
 
 	const handleSelectTeam = (e) => {
-		console.log(e.target.value);
 		if (e.target.value === 'Players') {
 			setSelectedTeam('');
 		} else {

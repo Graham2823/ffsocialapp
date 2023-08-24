@@ -9,6 +9,7 @@ const editTeam = () => {
     const [playerToAdd, setPlayerToAdd] = useState()
     const router = useRouter()
     const {id} = router.query
+	
 
     useEffect(()=>{
         fetch(`/api/editFantasyTeam?teamID=${id}`,{
@@ -27,21 +28,26 @@ const editTeam = () => {
 
     const handleClickPlayer = (e) => {
         const playerNameToReplace = e.target.innerText; // Name of the player to replace
-        const newPlayerName = playerToAdd; // New player name
+        const newPlayerName = playerToAdd.players.name; // New player name
     
         const updatedRoster = { ...teamToEdit.roster };
-    
+		console.log('player name to replace', playerNameToReplace)
+		console.log('updated roster', updatedRoster)
         // Iterate through the keys of the roster object
-        Object.keys(updatedRoster).forEach((position) => {
-            // Find the player in the current position's array with the specified name
-            const updatedPlayers = updatedRoster[position].map((player) =>
-                player.player === playerNameToReplace
-                    ? { ...player, player: newPlayerName }
-                    : player
-            );
-    
-            updatedRoster[position] = updatedPlayers;
-        });
+		Object.keys(updatedRoster).forEach((position) => {
+			const updatedPlayers = updatedRoster[position].map((player) =>
+				(player.player === playerNameToReplace && player.position.slice(0, -1) === playerToAdd.players.position || player.position === playerToAdd.players.position) 
+					? { ...player, player: newPlayerName }
+					: (player.player === playerNameToReplace && player.position === "Flex" && playerToAdd.players.position !== "QB" && playerToAdd.players.position !== "TE") 
+						? { ...player, player: newPlayerName }
+						: (player.player === playerNameToReplace && player.position.slice(0, -1) === 'bench') 
+							? { ...player, player: newPlayerName }
+							: player
+			);
+		
+			updatedRoster[position] = updatedPlayers;
+			console.log(updatedRoster)
+		});
     
         setTeamToEdit({
             ...teamToEdit,
@@ -76,7 +82,7 @@ const editTeam = () => {
 			console.error('Error editingteam:', error);
 		  });
     }
-    console.log(teamToEdit)
+  
     console.log("player to add!!!", playerToAdd)
   return (
     <>
@@ -111,10 +117,10 @@ const editTeam = () => {
 								  ))
 								  : null
 						)}
-        <Button onClick={handleSaveTeam}>Save Team</Button>
 					</tbody>
                 
 		</Table>
+		<Button onClick={handleSaveTeam}>Save Team</Button>
         </>
 								  }
 			</Container>
