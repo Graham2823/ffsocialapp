@@ -58,7 +58,7 @@ const index = () => {
 					</td>
 					<td>
 						<Button variant='primary'>
-							<Link href={`/viewFantasyTeams/editTeam?id=${team._id}`} as={`/viewFantasyTeams/editTeam?id=${team._id}`}>
+							<Link href={`/viewFantasyTeams/editTeam?id=${team._id}`} as={`/viewFantasyTeams/editTeam?id=${team._id}`} style={{color:'white', textDecoration:"none"}}>
 							Edit
 							</Link></Button>
 						<Button variant='danger' onClick={()=>handleDelete(team._id)} >Delete</Button>
