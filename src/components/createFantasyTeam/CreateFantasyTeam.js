@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Dropdown, Form, Button } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
+const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd, showAddPlayer, setShowDirection }) => {
 	const [selectedTeam, setSelectedTeam] = useState('');
 	const [selectedPlayers, setSelectedPlayers] = useState([]);
 	const [selectedPlayer, setSelectedPlayer] = useState();
@@ -34,6 +34,9 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
 
 	const handleDropDown = (e) => {
 		setSelectedPlayer(e.target.text);
+		if(setShowDirection){
+			setShowDirection(true)
+		}
 		if (setPlayerToAdd) {
 			const player = selectedPlayers.find(
 				(player) => player.players.name === e.target.text
@@ -141,7 +144,9 @@ const CreateFantasyTeam = ({ fantasyTeam, setFantasyTeam, setPlayerToAdd }) => {
 						</Dropdown.Menu>
 					)}
 				</Form.Group>
+				{showAddPlayer && 
 				<Button onClick={(e) => handleAddPlayer(e)}>Add Player</Button>
+				}
 			</Form>
 		</Container>
 	);

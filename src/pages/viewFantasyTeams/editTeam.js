@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import NavBar from '../../components/navbar/NavBar';
-import CreateFantasyTeam from '../../components/createFantasyTeam/createFantasyTeam';
+import CreateFantasyTeam from '../../components/createFantasyTeam/CreateFantasyTeam';
 import { Button, Container, Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,8 @@ const editTeam = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const [playersOnTeam, setPlayersOnTeam] = useState([]);
+	const [showAddPlayer, setShowAddPlayer] = useState(false)
+	const [showDirection, setShowDirection] = useState(false)
 	useEffect(() => {
 		fetch(`/api/editFantasyTeam?teamID=${id}`, {
 			method: 'GET',
@@ -43,6 +45,7 @@ const editTeam = () => {
 		const playerNameToReplace = e.target.innerText; // Name of the player to replace
 		const newPlayerName = playerToAdd.players.name; // New player name
 		const updatedRoster = { ...teamToEdit.roster };
+		setShowDirection(false)
 
 		let playerNameToReplaceUpdated = false; // Flag to track if the name has been updated
 
@@ -132,11 +135,12 @@ const editTeam = () => {
 				bench: teamToEdit.roster.bench,
 			}),
 		})
-			.then((res) => {
-				return res.json();
-			})
-			.then((data) => {
-				router.push('/viewFantasyTeams');
+		.then((res) => {
+			return res.json();
+		})
+		.then((data) => {
+			toast.success("Team Saved!");
+			router.push('/viewFantasyTeams');
 			})
 			.catch((error) => {
 				console.error('Error editingteam:', error);
@@ -150,7 +154,9 @@ const editTeam = () => {
 			<Container
 				style={{
 					display: 'flex',
-					justifyContent: 'space-evenly',
+					flexDirection:'column',
+					justifyContent: 'center',
+					alignItems:'center',
 					flexWrap: 'wrap',
 				}}>
 				{teamToEdit && (
@@ -158,7 +164,14 @@ const editTeam = () => {
 						<CreateFantasyTeam
 							fantasyTeam={teamToEdit}
 							setFantasyTeam={setTeamToEdit}
-							setPlayerToAdd={setPlayerToAdd}></CreateFantasyTeam>
+							setPlayerToAdd={setPlayerToAdd}
+							showAddPlayer={showAddPlayer}
+							setShowDirection={setShowDirection}
+							></CreateFantasyTeam>
+							{showDirection && (
+								<p>Click a Players name below to change player</p>
+							)
+							}
 						<Table
 							key={teamToEdit._id}
 							striped

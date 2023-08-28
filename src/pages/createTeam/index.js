@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import NavBar from '../../components/navbar/NavBar';
 import ChoseRosterFormat from '../../components/rosterParams/ChoseRosterFormat';
-import CreateFantasyTeam from '../../components/createFantasyTeam/createFantasyTeam';
+import CreateFantasyTeam from '../../components/createFantasyTeam/CreateFantasyTeam';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
@@ -26,6 +26,7 @@ const index = () => {
 	const [fantasyTeam, setFantasyTeam] = useState(initialTeam);
 	const [showRosterParams, setShowRosterParams] = useState(true)
 	const [teamCreated, setTeamCreated] = useState(false)
+	const [showAddPlayer, setShowAddPlayer] = useState(true)
 	const router = useRouter()
 
 	useEffect(()=>{
@@ -107,7 +108,7 @@ const index = () => {
 			{showRosterParams === false &&
 			<>
 			
-			<CreateFantasyTeam fantasyTeam={fantasyTeam} setFantasyTeam={setFantasyTeam} teams={teams}></CreateFantasyTeam>
+			<CreateFantasyTeam fantasyTeam={fantasyTeam} setFantasyTeam={setFantasyTeam} teams={teams} showAddPlayer={showAddPlayer}></CreateFantasyTeam>
 			<Container className='centered'>
 				<Table striped bordered hover size='sm' style={{height:'550px'}}>
 					<thead>
